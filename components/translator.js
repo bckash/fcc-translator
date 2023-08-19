@@ -11,17 +11,55 @@ let britishOnlyKeys = Object.keys(britishOnly)
 class Translator {
 
     translate(rb) {
+
+        let translated;
+
+        // - - - - - - - - - 
+        // replace key4value -> k4v = true
+        // replace value4key -> k4v = false
+        function wordReplace (object, keysArr, sentence, k4v) {
+
+            let replaced = sentence;
+            let reLiteral
+
+            keysArr.map( key => {
+                k4v 
+                    ? reLiteral = key
+                    : reLiteral = object[key]
+                let rgx = new RegExp(`${reLiteral}`)
+                if (rgx.test(sentence)){
+                    k4v
+                        ? replaced = replaced.replace(key, object[key])
+                        : replaced = replaced.replace(object[key], key)
+                    
+                }     
+            })
+            return replaced
+        }
+        // - - - - - - - - - 
+
+        // british -> american
+        if (rb.locale==="british-to-american") {
+
+            translated =  wordReplace(
+                britishOnly, britishOnlyKeys, rb.text, true)
+
+            translated =  wordReplace(
+                americanToBritishTitles, americanToBritishTitlesKeys, translated, false)
+
+            translated =  wordReplace(
+                americanToBritishSpelling, americanToBritishSpellingKeys, translated, false)
+
+            console.log(translated)
+            return translated
+
+        // american -> british
+        } else if (rb.locale==="american-to-british") {
+            console.log("coming soon")
+        }
+
+
         
-        let translated= rb;
-
-        britishOnlyKeys.map( key => {
-            let rgx = new RegExp(`${key}`)
-            if (rgx.test(rb)){
-                translated = translated.replace(key, britishOnly[key])
-            }     
-        })
-
-        console.log(translated)
     }
 
 }

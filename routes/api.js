@@ -10,8 +10,12 @@ module.exports = function (app) {
     .post((req, res) => {
 
       let rb = req.body
-      translator.translate(rb.text)
+      translator.translate(rb)
 
+      res.send({
+        text: rb.text,
+        translation: translator.translate(rb)
+      })
 
     });
 };
