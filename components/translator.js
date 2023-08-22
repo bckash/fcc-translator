@@ -35,8 +35,8 @@ class Translator {
                 let rgx = new RegExp("\\b"+reLiteral+"\\b", "i")
                 if (rgx.test(sentence)){
                     k4v
-                        ? replaced = replaced.replace(key, object[key])
-                        : replaced = replaced.replace(object[key], key)
+                        ? replaced = replacedCap.replace(key, object[key])
+                        : replaced = replacedCap.replace(object[key], key)
                 }     
             })
             // capitalize first letter
