@@ -18,8 +18,14 @@ class Translator {
         // replace key4value -> k4v = true
         // replace value4key -> k4v = false
         function wordReplace (object, keysArr, sentence, k4v) {
+          
+            let replaced = sentence
 
-            let replaced = sentence.toLowerCase();
+            // first letter to small case
+            let firstLetter  = replaced.charAt(0).toLowerCase()
+            let otherLetters = replaced.slice(1)
+            let replacedCap  = firstLetter+otherLetters
+
             let reLiteral
 
             keysArr.map( key => {
@@ -34,9 +40,9 @@ class Translator {
                 }     
             })
             // capitalize first letter
-            let firstLetter  = replaced.charAt(0).toUpperCase()
-            let otherLetters = replaced.slice(1)
-            let replacedCap  = firstLetter+otherLetters
+            firstLetter  = replaced.charAt(0).toUpperCase()
+            otherLetters = replaced.slice(1)
+            replacedCap  = firstLetter+otherLetters
 
             return replacedCap
         }
