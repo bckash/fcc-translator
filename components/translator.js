@@ -59,17 +59,27 @@ class Translator {
 
             translated =  wordReplace(
                 americanToBritishSpelling, americanToBritishSpellingKeys, translated, false)
-
-            // console.log(translated)
-            return translated
+            
+            translated =  wordReplace(
+                americanOnly, americanOnlyKeys, translated, false)    
 
         // american -> british
         } else if (rb.locale==="american-to-british") {
-            console.log("coming soon")
-        }
+            
+            translated =  wordReplace(
+                americanOnly, americanOnlyKeys, rb.text, true)
 
+            translated =  wordReplace(
+                americanToBritishTitles, americanToBritishTitlesKeys, translated, true)
 
-        
+            translated =  wordReplace(
+                americanToBritishSpelling, americanToBritishSpellingKeys, translated, true)
+            
+            translated =  wordReplace(
+                britishOnly, britishOnlyKeys, translated, false)           
+        } 
+       
+        return translated
     }
 
 }
