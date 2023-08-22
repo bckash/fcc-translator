@@ -19,22 +19,26 @@ class Translator {
         // replace value4key -> k4v = false
         function wordReplace (object, keysArr, sentence, k4v) {
 
-            let replaced = sentence;
+            let replaced = sentence.toLowerCase();
             let reLiteral
 
             keysArr.map( key => {
                 k4v 
                     ? reLiteral = key
                     : reLiteral = object[key]
-                let rgx = new RegExp(`${reLiteral}`)
+                let rgx = new RegExp("\\b"+reLiteral+"\\b", "i")
                 if (rgx.test(sentence)){
                     k4v
                         ? replaced = replaced.replace(key, object[key])
                         : replaced = replaced.replace(object[key], key)
-                    
                 }     
             })
-            return replaced
+            // capitalize first letter
+            let firstLetter  = replaced.charAt(0).toUpperCase()
+            let otherLetters = replaced.slice(1)
+            let replacedCap  = firstLetter+otherLetters
+
+            return replacedCap
         }
         // - - - - - - - - - 
 
@@ -50,7 +54,7 @@ class Translator {
             translated =  wordReplace(
                 americanToBritishSpelling, americanToBritishSpellingKeys, translated, false)
 
-            console.log(translated)
+            // console.log(translated)
             return translated
 
         // american -> british
