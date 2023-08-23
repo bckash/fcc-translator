@@ -29,6 +29,8 @@ class Translator {
             let reLiteral
             let dotRgx = /\./
             let rgx
+            let rgxSpan = /^<span class="highlight">/
+            let spanString = '<span class="highlight">'
 
             keysArr.map( key => {
                 k4v 
@@ -47,15 +49,25 @@ class Translator {
 
                 if (rgx.test(sentence)){
                     k4v
-                        ? replaced = replacedCap.replace(key, object[key])
-                        : replaced = replacedCap.replace(object[key], key)
+                        ? replaced = replacedCap.replace(
+                            key, spanString + object[key] + '</span>')
+                        : replaced = replacedCap.replace(
+                            object[key], spanString + key +' </span>')
                 }     
             })
             // capitalize first letter
-            firstLetter  = replaced.charAt(0).toUpperCase()
-            otherLetters = replaced.slice(1)
-            replacedCap  = firstLetter+otherLetters
+            if (rgxSpan.test(replaced)) {
+                firstLetter  = replaced.charAt(spanString.length).toUpperCase()
+                otherLetters = replaced.slice(spanString.length+1)
+                replacedCap  = spanString+firstLetter+otherLetters
 
+            } else {
+                firstLetter  = replaced.charAt(0).toUpperCase()
+                otherLetters = replaced.slice(1)
+                replacedCap  = firstLetter+otherLetters
+            }
+
+            console.log(replacedCap)
             return replacedCap
         }
         // - - - - - - - - - 
