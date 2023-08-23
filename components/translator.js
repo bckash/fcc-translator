@@ -27,12 +27,24 @@ class Translator {
             let replacedCap  = firstLetter+otherLetters
 
             let reLiteral
+            let dotRgx = /\./
+            let rgx
 
             keysArr.map( key => {
                 k4v 
                     ? reLiteral = key
                     : reLiteral = object[key]
-                let rgx = new RegExp("\\b"+reLiteral+"\\b", "i")
+
+                if (dotRgx.test(reLiteral)){
+                    let rlArray = reLiteral.split("")
+                    let dotIndex = rlArray.indexOf(".")
+                    rlArray.splice(dotIndex, 0, "\\")
+                    reLiteral = rlArray.join("")
+                    rgx = new RegExp(reLiteral, "i")
+                } else {
+                    rgx = new RegExp("\\b"+reLiteral+"\\b", "i")
+                }
+
                 if (rgx.test(sentence)){
                     k4v
                         ? replaced = replacedCap.replace(key, object[key])
