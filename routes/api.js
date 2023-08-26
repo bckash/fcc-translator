@@ -29,7 +29,5 @@ module.exports = function (app) {
         else res.send({ error: 'Required field(s) missing' })
       }
 
-
-
     });
 };

@@ -58,7 +58,7 @@ class Translator {
                         : replacementWord = key
                    
                     replaced = replaced.replace(
-                        rgx, spanString + replacementWord +' </span>')
+                        rgx, spanString + replacementWord + '</span>')
                 }     
             })
             
@@ -74,10 +74,29 @@ class Translator {
                 replacedCap  = firstLetter+otherLetters
             }
 
-            console.log(replacedCap)
+            // console.log(replacedCap)
             translated =  replacedCap
         }
         // - - - - - - - - - 
+
+        function hourMinuteSeperatorSwapper(txt, rgx, replace, replacement){
+
+            let spanString = '<span class="highlight">'
+
+            if (rgx.test(txt)) {
+                let translatedArray =  txt.split(" ")
+                let hourSwap = translatedArray.map( word => {
+                    return (rgx.test(word))
+                        ? spanString + word.replace(replace, replacement)+'</span>'
+                        : word
+                })
+
+                return hourSwap.join(" ")
+
+            } else {
+                return txt
+            }
+        }
 
         // british -> american
         if (rb.locale==="british-to-american") {
@@ -93,13 +112,11 @@ class Translator {
             
             wordReplace(
                 americanOnly, americanOnlyKeys, translated, false)
-                
-            // timeRgx = /\b(?:[01]?[0-9]|2[0-3])\.[0-5][0-9]\b/
-            // if (timeRgx.test(translated)) {
-            //     let translatedArray =  translated.split(" ")
-            //     console.log(translatedArray)
-            // }
-
+            
+            timeRgx = /\b(?:[01]?[0-9]|2[0-3])\.[0-5][0-9]\b/    
+            translated = hourMinuteSeperatorSwapper(
+                translated, timeRgx, ".", ":")
+                console.log(translated)
 
         // american -> british
         } else if (rb.locale==="american-to-british") {
@@ -114,7 +131,11 @@ class Translator {
                 americanToBritishSpelling, americanToBritishSpellingKeys, translated, true)
             
             wordReplace(
-                britishOnly, britishOnlyKeys, translated, false)           
+                britishOnly, britishOnlyKeys, translated, false)
+                
+            timeRgx = /\b(?:[01]?[0-9]|2[0-3])\:[0-5][0-9]\b/    
+            translated = hourMinuteSeperatorSwapper(
+                translated, timeRgx, ":", ".")
         } 
        
         return translated
