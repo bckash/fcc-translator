@@ -13,22 +13,30 @@ class Translator {
     translate(rb) {
 
         let translated;
+        let timeRgx 
 
         // - - - - - - - - - 
-        // replace key4value -> k4v = true
-        // replace value4key -> k4v = false
+        /*
+            If we searching the sentence for the "key", to be replaced by "value" (components objects) : k4v = true. 
+
+            if we searching the sentence for the "value", to be replaced by "key" : k4v = false.
+        */
+
         function wordReplace (object, keysArr, sentence, k4v) {
           
-            let replaced = sentence
+            let replaced = sentence // for first map iteration
+            let firstLetter 
+            let otherLetters 
+            let replacedCap 
 
             // first letter to small case
-            let firstLetter  = replaced.charAt(0).toLowerCase()
-            let otherLetters = replaced.slice(1)
-            let replacedCap  = firstLetter+otherLetters
+            // firstLetter  = replaced.charAt(0).toLowerCase()
+            // otherLetters = replaced.slice(1)
+            // replacedCap  = firstLetter+otherLetters
 
+            let rgx
             let reLiteral
             let dotRgx = /\./
-            let rgx
             let rgxSpan = /^<span class="highlight">/
             let spanString = '<span class="highlight">'
 
@@ -49,14 +57,15 @@ class Translator {
 
                 if (rgx.test(sentence)){
                     k4v
-                        ? replaced = replacedCap.replace(
+                        ? replaced = replaced.replace(
                             key, spanString + object[key] + '</span>')
-                        : replaced = replacedCap.replace(
+                        : replaced = replaced.replace(
                             object[key], spanString + key +' </span>')
                 }     
             })
+            
             // capitalize first letter
-            if (rgxSpan.test(replaced)) {
+            if (rgxSpan.test(replaced)) { // <span> at begginig
                 firstLetter  = replaced.charAt(spanString.length).toUpperCase()
                 otherLetters = replaced.slice(spanString.length+1)
                 replacedCap  = spanString+firstLetter+otherLetters
@@ -68,38 +77,45 @@ class Translator {
             }
 
             console.log(replacedCap)
-            return replacedCap
+            translated =  replacedCap
         }
         // - - - - - - - - - 
 
         // british -> american
         if (rb.locale==="british-to-american") {
 
-            translated =  wordReplace(
+            wordReplace(
                 britishOnly, britishOnlyKeys, rb.text, true)
 
-            translated =  wordReplace(
+            wordReplace(
                 americanToBritishTitles, americanToBritishTitlesKeys, translated, false)
 
-            translated =  wordReplace(
+            wordReplace(
                 americanToBritishSpelling, americanToBritishSpellingKeys, translated, false)
             
-            translated =  wordReplace(
-                americanOnly, americanOnlyKeys, translated, false)    
+            wordReplace(
+                americanOnly, americanOnlyKeys, translated, false)
+                
+            // timeRgx = /\b(?:[01]?[0-9]|2[0-3])\.[0-5][0-9]\b/
+            // if (timeRgx.test(translated)) {
+            //     let translatedArray =  translated.split(" ")
+            //     console.log(translatedArray)
+            // }
+
 
         // american -> british
         } else if (rb.locale==="american-to-british") {
             
-            translated =  wordReplace(
+             wordReplace(
                 americanOnly, americanOnlyKeys, rb.text, true)
 
-            translated =  wordReplace(
+            wordReplace(
                 americanToBritishTitles, americanToBritishTitlesKeys, translated, true)
 
-            translated =  wordReplace(
+            wordReplace(
                 americanToBritishSpelling, americanToBritishSpellingKeys, translated, true)
             
-            translated =  wordReplace(
+            wordReplace(
                 britishOnly, britishOnlyKeys, translated, false)           
         } 
        
