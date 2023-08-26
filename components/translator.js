@@ -24,15 +24,10 @@ class Translator {
 
         function wordReplace (object, keysArr, sentence, k4v) {
           
-            let replaced = sentence // for first map iteration
+            let replaced = sentence // for map, first iteration
             let firstLetter 
             let otherLetters 
             let replacedCap 
-
-            // first letter to small case
-            // firstLetter  = replaced.charAt(0).toLowerCase()
-            // otherLetters = replaced.slice(1)
-            // replacedCap  = firstLetter+otherLetters
 
             let rgx
             let reLiteral
@@ -45,22 +40,25 @@ class Translator {
                     ? reLiteral = key
                     : reLiteral = object[key]
 
-                if (dotRgx.test(reLiteral)){
+                if (dotRgx.test(reLiteral)){ // for titles
                     let rlArray = reLiteral.split("")
                     let dotIndex = rlArray.indexOf(".")
                     rlArray.splice(dotIndex, 0, "\\")
                     reLiteral = rlArray.join("")
                     rgx = new RegExp(reLiteral, "i")
+
                 } else {
                     rgx = new RegExp("\\b"+reLiteral+"\\b", "i")
                 }
-
+                
                 if (rgx.test(sentence)){
+                    let replacementWord
                     k4v
-                        ? replaced = replaced.replace(
-                            key, spanString + object[key] + '</span>')
-                        : replaced = replaced.replace(
-                            object[key], spanString + key +' </span>')
+                        ? replacementWord = object[key]
+                        : replacementWord = key
+                   
+                    replaced = replaced.replace(
+                        rgx, spanString + replacementWord +' </span>')
                 }     
             })
             

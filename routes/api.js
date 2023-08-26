@@ -17,8 +17,8 @@ module.exports = function (app) {
           res.send({
             text: rb.text,
             translation: translator.translate(rb) === rb.text
-            ? "Everything looks good to me!"
-            : translator.translate(rb)
+              ? "Everything looks good to me!"
+              : translator.translate(rb)
           })
         } else {
           res.json({ error: 'Invalid value for locale field' })
