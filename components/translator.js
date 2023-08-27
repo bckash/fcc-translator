@@ -74,7 +74,6 @@ class Translator {
                 replacedCap  = firstLetter+otherLetters
             }
 
-            // console.log(replacedCap)
             translated =  replacedCap
         }
         // - - - - - - - - - 
@@ -116,7 +115,6 @@ class Translator {
             timeRgx = /\b(?:[01]?[0-9]|2[0-3])\.[0-5][0-9]\b/    
             translated = hourMinuteSeperatorSwapper(
                 translated, timeRgx, ".", ":")
-                console.log(translated)
 
         // american -> british
         } else if (rb.locale==="american-to-british") {
