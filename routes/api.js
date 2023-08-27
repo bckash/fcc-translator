@@ -10,7 +10,6 @@ module.exports = function (app) {
     .post((req, res) => {
 
       let rb = req.body
-      console.log(req.body)
 
       if (rb.text && rb.locale) {
         if (rb.locale === "american-to-british" || rb.locale === "british-to-american") {
